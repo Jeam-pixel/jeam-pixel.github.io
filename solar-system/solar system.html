@@ -70,67 +70,59 @@
   <body>
     <a-scene>
 
-      <a-assets>
-        <img id="sun-tex"     src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/1280px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg" crossorigin="anonymous">
-        <img id="mercury-tex" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/1024px-Mercury_in_true_color.jpg" crossorigin="anonymous">
-        <img id="venus-tex"   src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/1024px-Venus-real_color.jpg" crossorigin="anonymous">
-        <img id="earth-tex"   src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/1024px-The_Blue_Marble_%28remastered%29.jpg" crossorigin="anonymous">
-        <img id="mars-tex"    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/1024px-OSIRIS_Mars_true_color.jpg" crossorigin="anonymous">
-      </a-assets>
-
       <a-sky color="#000010"></a-sky>
 
-      <a-light type="ambient" color="#ffffff" intensity="1.5"></a-light>
+      <a-light type="ambient" color="#ffffff" intensity="2"></a-light>
       <a-light type="point" color="#FDB813" intensity="3" position="0 0 0"></a-light>
 
       <!-- Sun -->
       <a-sphere id="sun"
         position="0 0 0"
         radius="1.5"
-        material="shader: flat; src: #sun-tex"
+        material="shader: flat; color: #FDB813"
         sun-color-cycle
         planet-label="name: Sun"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
       </a-sphere>
 
-      <!-- Mercury -->
+      <!-- Mercury - gray -->
       <a-sphere
         radius="0.15"
-        material="shader: flat; src: #mercury-tex"
+        material="shader: flat; color: #b5b5b5"
         orbit="radius: 3; speed: 1.6; offset: 0"
         planet-label="name: Mercury"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
       </a-sphere>
 
-      <!-- Venus -->
+      <!-- Venus - pale yellow -->
       <a-sphere
         radius="0.25"
-        material="shader: flat; src: #venus-tex"
+        material="shader: flat; color: #e8cda0"
         orbit="radius: 4.5; speed: 1.17; offset: 1"
         planet-label="name: Venus"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 6000">
       </a-sphere>
 
-      <!-- Earth -->
+      <!-- Earth - blue -->
       <a-sphere
         radius="0.28"
-        material="shader: flat; src: #earth-tex"
+        material="shader: flat; color: #1a6fa8"
         orbit="radius: 6; speed: 1.0; offset: 2"
         planet-label="name: Earth"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
       </a-sphere>
 
-      <!-- Moon -->
+      <!-- Moon - light gray -->
       <a-sphere
         radius="0.08"
         material="shader: flat; color: #cccccc"
-        moon-orbit="earthRadius: 6; earthSpeed: 1.0; earthOffset: 2; moonRadius: 0.6; moonSpeed: 4">
+        moon-orbit="earthRadius: 6; earthSpeed: 1.0; earthOffset: 2; moonRadius: 0.5; moonSpeed: 4">
       </a-sphere>
 
-      <!-- Mars -->
+      <!-- Mars - red -->
       <a-sphere
         radius="0.2"
-        material="shader: flat; src: #mars-tex"
+        material="shader: flat; color: #c1440e"
         orbit="radius: 7.5; speed: 0.8; offset: 3"
         planet-label="name: Mars"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 7000">
@@ -142,7 +134,7 @@
           radius="0.35"
           tube="0.05"
           rotation="90 0 0"
-          material="color: #c2a16e; transparent: true; opacity: 0.8; shader: flat">
+          material="shader: flat; color: #c2a16e; transparent: true; opacity: 0.8">
         </a-torus>
       </a-entity>
 
