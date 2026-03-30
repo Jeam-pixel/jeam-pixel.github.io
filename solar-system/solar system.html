@@ -83,11 +83,11 @@
       <a-light type="ambient" color="#ffffff" intensity="1.5"></a-light>
       <a-light type="point" color="#FDB813" intensity="3" position="0 0 0"></a-light>
 
-      <!-- Orbit path rings -->
-      <a-torus position="0 0 0" radius="3"   tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
-      <a-torus position="0 0 0" radius="4.5" tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
-      <a-torus position="0 0 0" radius="6"   tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
-      <a-torus position="0 0 0" radius="7.5" tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
+      <!-- Orbit path rings - thin lines -->
+      <a-torus position="0 0 0" radius="3"   tube="0.005" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.4; shader: flat"></a-torus>
+      <a-torus position="0 0 0" radius="4.5" tube="0.005" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.4; shader: flat"></a-torus>
+      <a-torus position="0 0 0" radius="6"   tube="0.005" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.4; shader: flat"></a-torus>
+      <a-torus position="0 0 0" radius="7.5" tube="0.005" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.4; shader: flat"></a-torus>
 
       <!-- Sun -->
       <a-sphere id="sun"
@@ -148,7 +148,7 @@
           radius="0.35"
           tube="0.05"
           rotation="90 0 0"
-          material="color: #c2a16e; transparent: true; opacity: 0.8">
+          material="color: #c2a16e; transparent: true; opacity: 0.8; shader: flat">
         </a-torus>
       </a-entity>
 
