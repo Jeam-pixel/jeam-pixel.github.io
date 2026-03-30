@@ -3,7 +3,6 @@
   <head>
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
     <script>
-      // Sun colour cycling
       AFRAME.registerComponent('sun-color-cycle', {
         init: function () {
           this.colors = ['#FDB813', '#FF6600', '#FF0000', '#FFD700', '#FF4500'];
@@ -20,12 +19,11 @@
         }
       });
 
-      // Orbit around the sun
       AFRAME.registerComponent('orbit', {
         schema: {
-          radius:   { type: 'number', default: 5 },
-          speed:    { type: 'number', default: 1 },
-          offset:   { type: 'number', default: 0 }
+          radius:  { type: 'number', default: 5 },
+          speed:   { type: 'number', default: 1 },
+          offset:  { type: 'number', default: 0 }
         },
         tick: function (time) {
           const angle = (time * 0.001 * this.data.speed) + this.data.offset;
@@ -34,68 +32,127 @@
           this.el.setAttribute('position', { x: x, y: 0, z: z });
         }
       });
+
+      AFRAME.registerComponent('moon-orbit', {
+        schema: {
+          earthRadius: { type: 'number', default: 6 },
+          earthSpeed:  { type: 'number', default: 1.0 },
+          earthOffset: { type: 'number', default: 2 },
+          moonRadius:  { type: 'number', default: 0.6 },
+          moonSpeed:   { type: 'number', default: 4 }
+        },
+        tick: function (time) {
+          const t = time * 0.001;
+          const earthAngle = (t * this.data.earthSpeed) + this.data.earthOffset;
+          const ex = Math.cos(earthAngle) * this.data.earthRadius;
+          const ez = Math.sin(earthAngle) * this.data.earthRadius;
+          const moonAngle = t * this.data.moonSpeed;
+          const mx = ex + Math.cos(moonAngle) * this.data.moonRadius;
+          const mz = ez + Math.sin(moonAngle) * this.data.moonRadius;
+          this.el.setAttribute('position', { x: mx, y: 0, z: mz });
+        }
+      });
+
+      AFRAME.registerComponent('planet-label', {
+        schema: { name: { type: 'string', default: '' } },
+        init: function () {
+          const label = document.createElement('a-text');
+          label.setAttribute('value', this.data.name);
+          label.setAttribute('align', 'center');
+          label.setAttribute('color', '#ffffff');
+          label.setAttribute('width', '3');
+          label.setAttribute('position', '0 0.6 0');
+          this.el.appendChild(label);
+        }
+      });
     </script>
   </head>
   <body>
     <a-scene>
 
       <a-assets>
-        <img id="sun-tex"      src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/1280px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg" crossorigin="anonymous">
-        <img id="mercury-tex"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/1024px-Mercury_in_true_color.jpg" crossorigin="anonymous">
-        <img id="venus-tex"    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/1024px-Venus-real_color.jpg" crossorigin="anonymous">
-        <img id="earth-tex"    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/1024px-The_Blue_Marble_%28remastered%29.jpg" crossorigin="anonymous">
-        <img id="mars-tex"     src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/1024px-OSIRIS_Mars_true_color.jpg" crossorigin="anonymous">
+        <img id="sun-tex"     src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/1280px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg" crossorigin="anonymous">
+        <img id="mercury-tex" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/1024px-Mercury_in_true_color.jpg" crossorigin="anonymous">
+        <img id="venus-tex"   src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/1024px-Venus-real_color.jpg" crossorigin="anonymous">
+        <img id="earth-tex"   src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/1024px-The_Blue_Marble_%28remastered%29.jpg" crossorigin="anonymous">
+        <img id="mars-tex"    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/1024px-OSIRIS_Mars_true_color.jpg" crossorigin="anonymous">
       </a-assets>
 
-      <!-- Starfield sky -->
       <a-sky color="#000010"></a-sky>
 
-      <!-- Lights -->
       <a-light type="ambient" color="#ffffff" intensity="1.5"></a-light>
       <a-light type="point" color="#FDB813" intensity="3" position="0 0 0"></a-light>
+
+      <!-- Orbit path rings -->
+      <a-torus position="0 0 0" radius="3"   tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
+      <a-torus position="0 0 0" radius="4.5" tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
+      <a-torus position="0 0 0" radius="6"   tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
+      <a-torus position="0 0 0" radius="7.5" tube="0.02" rotation="90 0 0" material="color: #ffffff; transparent: true; opacity: 0.2"></a-torus>
 
       <!-- Sun -->
       <a-sphere id="sun"
         position="0 0 0"
         radius="1.5"
-        src="#sun-tex"
+        material="shader: flat; src: #sun-tex"
         sun-color-cycle
+        planet-label="name: Sun"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
       </a-sphere>
 
       <!-- Mercury -->
       <a-sphere
         radius="0.15"
-        src="#mercury-tex"
+        material="shader: flat; src: #mercury-tex"
         orbit="radius: 3; speed: 1.6; offset: 0"
+        planet-label="name: Mercury"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
       </a-sphere>
 
       <!-- Venus -->
       <a-sphere
         radius="0.25"
-        src="#venus-tex"
+        material="shader: flat; src: #venus-tex"
         orbit="radius: 4.5; speed: 1.17; offset: 1"
+        planet-label="name: Venus"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 6000">
       </a-sphere>
 
       <!-- Earth -->
       <a-sphere
         radius="0.28"
-        src="#earth-tex"
+        material="shader: flat; src: #earth-tex"
         orbit="radius: 6; speed: 1.0; offset: 2"
+        planet-label="name: Earth"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+      </a-sphere>
+
+      <!-- Moon -->
+      <a-sphere
+        radius="0.08"
+        material="shader: flat; color: #cccccc"
+        moon-orbit="earthRadius: 6; earthSpeed: 1.0; earthOffset: 2; moonRadius: 0.6; moonSpeed: 4">
       </a-sphere>
 
       <!-- Mars -->
       <a-sphere
         radius="0.2"
-        src="#mars-tex"
+        material="shader: flat; src: #mars-tex"
         orbit="radius: 7.5; speed: 0.8; offset: 3"
+        planet-label="name: Mars"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 7000">
       </a-sphere>
 
-      <!-- Camera with W-A-S-D controls -->
+      <!-- Rings around Mars -->
+      <a-entity orbit="radius: 7.5; speed: 0.8; offset: 3">
+        <a-torus
+          radius="0.35"
+          tube="0.05"
+          rotation="90 0 0"
+          material="color: #c2a16e; transparent: true; opacity: 0.8">
+        </a-torus>
+      </a-entity>
+
+      <!-- Camera -->
       <a-entity position="0 2 12">
         <a-camera wasd-controls-enabled="true" look-controls>
           <a-cursor></a-cursor>
